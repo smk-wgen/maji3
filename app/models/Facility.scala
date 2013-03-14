@@ -1,0 +1,57 @@
+package models
+
+import anorm._
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import play.api.libs.json.util._
+import play.api.libs.json.Writes._
+import play.api.libs.json.JsValue
+
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: skunnumkal
+ * Date: 3/11/13
+ * Time: 4:28 PM
+ * To change this template use File | Settings | File Templates.
+ */
+case class Facility(id:Pk[Int],name:String,line1:String,line2:String,city:String,state:String,country:String,
+                    zip:String)
+
+object Facility{
+
+  implicit val facilityWriter = (
+    (__ \ "id").write(PkWriter) and
+      (__ \ "name").write[String] and
+      (__ \ "line1").write[String] and
+      (__ \ "line2").write[String] and
+      (__ \ "city").write[String] and
+      (__ \ "state").write[String] and
+      (__ \ "country").write[String] and
+      (__ \ "zip").write[String]
+    )(unlift(Facility.unapply))
+
+
+  //implicit object PkFormat extends Format[Pk[Int]] {
+   //   def reads(jsNum:JsValue):JsResult[Pk[Int]] = Id(jsNum.as[Int])
+//    def reads(jsNum:JsValue): JsResult[Pk[Int]] = {
+//      case JsNumber(jsNum) => JsSuccess(Id(jsNum))
+//      case _ => JsError()
+//    }
+    //Id(jsNum.as[Int])
+    //def writes(id:Pk[Int]):JsValue = new JsNumber(id.get)
+  //}
+  implicit object PkWriter extends Writes[Pk[Int]]{
+    def writes(id:Pk[Int]):JsValue = new JsNumber(id.get)
+  }
+  implicit object PkReader extends Reads[Pk[Int]]{
+    def reads(js:JsValue):JsResult[Pk[Int]] = js match{
+      case JsNumber(js) => JsSuccess(Id(JsNumber(js).as[Int]))
+      case _ => JsError()
+    }
+  }
+
+
+	
+	
+}

@@ -1,0 +1,16 @@
+@main("New story"){
+  <p>In deep trouble</p>
+ <form name="myForm" ng-controller="Ctrl" ng-submit="submit()">
+        Title: <input name="input" ng-model="title" required>
+        Description: <input name="input" ng-model="description" required>
+ <br/>
+     <select name="selectedFacilityId" ng-model="selectedFacilityId">
+         <option ng:repeat="facility in facilities" value="{{facility.id}}">{{facility.name}}</option>
+     </select>
+     <input type="submit" id="submit" value="Submit" />
+    <span class="error" ng-show="myForm.input.$error.required">Required!</span><br>
+
+  </form>
+
+}
+
