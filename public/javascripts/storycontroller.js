@@ -29,7 +29,9 @@ function Ctrl($scope,$http) {
 
     $scope.selectedFacilityId=1;
     $scope.submit = function(){
-        var postData =  {'title':$scope.title,'description':$scope.description,'facilityId':$scope.selectedFacilityId,'id':''};
+        var postData =  {'title':$scope.title,'description':$scope.description,'facilityId':$scope.selectedFacilityId,
+            'id':'','you':$scope.you,'rating':$scope.rating,'problem':$scope.problemType,
+        'treatment':$scope.treatment};
         $http.post('/storypost',postData,{ 'Content-Type':'application/json'}).success(onSuccess).error(onError);
 //        jsRouter.controllers.Application.newStory().ajax({
 //            type:'POST',
@@ -44,6 +46,8 @@ function Ctrl($scope,$http) {
     };
     var onSuccess = function(data){console.log(data);
         $scope.facilities = data;
+        $http.get('/');
+        $location = '/';
     };
     var onError = function(data){console.log(data);};
 }

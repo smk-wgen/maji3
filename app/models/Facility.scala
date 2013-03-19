@@ -1,11 +1,17 @@
 package models
 
 import anorm._
+import anorm.SqlParser._
+
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.libs.json.util._
+
 import play.api.libs.json.Writes._
 import play.api.libs.json.JsValue
+
+import play.api.db._
+import play.api.Play.current
+
 
 
 /**
@@ -20,7 +26,23 @@ case class Facility(id:Pk[Int],name:String,line1:String,line2:String,city:String
 
 object Facility{
 
-  implicit val facilityWriter = (
+
+
+
+    val facilityParser = {
+      get[Pk[Int]]("facility.id") ~
+        get[String]("facility.name") ~
+        get[String]("facility.line1") ~
+        get[String]("facility.line2") ~
+        get[String]("facility.city") ~
+        get[String]("facility.state") ~
+        get[String]("facility.country") ~
+        get[String]("facility.zip") map {
+        case id~name~line1~line2~city~state~country~zip => Facility(id,name,line1,line2,city,state,country,zip)
+      }
+    }
+
+    implicit val facilityWriter = (
     (__ \ "id").write(PkWriter) and
       (__ \ "name").write[String] and
       (__ \ "line1").write[String] and
@@ -32,15 +54,6 @@ object Facility{
     )(unlift(Facility.unapply))
 
 
-  //implicit object PkFormat extends Format[Pk[Int]] {
-   //   def reads(jsNum:JsValue):JsResult[Pk[Int]] = Id(jsNum.as[Int])
-//    def reads(jsNum:JsValue): JsResult[Pk[Int]] = {
-//      case JsNumber(jsNum) => JsSuccess(Id(jsNum))
-//      case _ => JsError()
-//    }
-    //Id(jsNum.as[Int])
-    //def writes(id:Pk[Int]):JsValue = new JsNumber(id.get)
-  //}
   implicit object PkWriter extends Writes[Pk[Int]]{
     def writes(id:Pk[Int]):JsValue = new JsNumber(id.get)
   }
@@ -50,6 +63,39 @@ object Facility{
       case _ => JsError()
     }
   }
+
+
+    def findById(id:Int): Option[Facility] = {
+      DB.withConnection { implicit connection =>
+        SQL("select * from facility where id = {id}").on(
+          'id -> id
+        ).as(Facility.facilityParser.singleOpt)
+      }
+    }
+
+    def findAll(): Seq[Facility] = {
+      DB.withConnection {
+        implicit connection =>
+          SQL("select * from facility").as(Facility.facilityParser *)
+      }
+    }
+    def create(facility:Facility):Boolean = {
+      DB.withConnection {
+        implicit connection =>
+          SQL("insert into facility(name, line1, line2, city, state,country,zip) " +
+            "values ({name}, {line1}, {line2}, {city}, {state}, {country}, {zip});").on(
+            'name -> facility.name,
+            'line1 -> facility.line1,
+            'line2 -> facility.line2,
+            'city -> facility.city,
+            'state -> facility.state,
+            'country -> facility.country,
+            'zip -> facility.zip
+          ).executeUpdate()
+
+          return true;
+      }
+    }
 
 
 	

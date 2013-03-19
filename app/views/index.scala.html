@@ -4,4 +4,10 @@
     
 
      <a href="/storyform">New Story</a>
+
+    <ul ng-controller="IndexCtrl">
+            <li ng-repeat="story in stories">
+            <a href="/story/{{story.id}}">{{story.title}}</a>  {{story.description}}
+            </li>
+    </ul>
 }
