@@ -58,14 +58,22 @@ object Application extends Controller {
     request =>
       val json = request.body
 
-      val story = json.as[Story];
-      System.out.println("Story" + story)
-      Story.create(story)
-      Ok(views.html.index("Welcome"))
-//      json.validate[Story].fold(
-//        valid = ( res => Ok(res.title) ),
-//        invalid = ( e => BadRequest(e.toString) )
-//      )
+      //val story = json.as[Story];
+
+      //System.out.println("Story" + story)
+      //Story.create(story)
+      //Ok(views.html.index("Welcome"))
+      json.validate[Story].fold(
+        valid = ( res => {
+          System.out.println("valid" + res)
+          Story.create(res)
+          System.out.println("In here")
+          Ok(views.html.index("Welcome"))
+        } ),
+        invalid = ( e => {
+          System.out.println("Got a bad request")
+          BadRequest(e.toString)} )
+      )
     //request => val json = request.body
 
 

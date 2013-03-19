@@ -45,9 +45,10 @@ function Ctrl($scope,$http) {
            // $http.post(url,).success(onSuccess).error(onError);
     };
     var onSuccess = function(data){console.log(data);
-        $scope.facilities = data;
+        //$scope.facilities = data;
+        alert("Story created");
         $http.get('/');
-        $location = '/';
+        location.href = '/';
     };
     var onError = function(data){console.log(data);};
 }

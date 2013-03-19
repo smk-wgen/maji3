@@ -9,7 +9,7 @@
          <option ng:repeat="facility in facilities" value="{{facility.id}}">{{facility.name}}</option>
      </select>   <br/>
      Explain your problem: <input name="problemType" ng-model="problemType" required>  <br/>
-     Are you? <input type="radio" name="you" value="Patient" checked="checked" ng-model="you"> Patient<br>
+     Are you? <input type="radio" name="you" value="Patient" checked="checked" ng-model="you" required> Patient<br>
               <input type="radio" name="you" value="Relative" ng-model="you"> Relative<br>
 
      <input type="radio" name="you" value="Care" ng-model="you" > Care<br>
@@ -17,7 +17,7 @@
      <input type="radio" name="you" value="Volunteer" ng-model="you"> Volunteer<br>
      What treatment did you take? <input type="text" name="treatment" ng-model="treatment" required>   <br/>
      Rating / Service ?
-     <input type="radio" name="rating" value="Good" ng-model="rating" > Good<br>
+     <input type="radio" name="rating" value="Good" ng-model="rating" required> Good<br>
      <input type="radio" name="rating" value="Ok" ng-model="rating"> Ok<br>
      <input type="radio" name="rating" value="Bad" ng-model="rating"> Bad<br>
      <input type="submit" id="submit" value="Submit" />
