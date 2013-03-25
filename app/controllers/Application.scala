@@ -1,10 +1,10 @@
 package controllers
 
-import play.api._
+
 import play.api.mvc._
 import models._
 import play.api.libs.json._
-import anorm._
+
 
 
 
@@ -80,7 +80,8 @@ object Application extends Controller {
   }
 
   def getStoryForm = Action {
-    Ok(views.html.storyform())
+    val problems:Seq[String] = List("Abdominal Pain","Anxiety","Bloating")
+    Ok(views.html.storyform(problems))
   }
 
   def javascriptRoutes() = Action { implicit request =>

@@ -9,6 +9,8 @@ import play.api.libs.json.Reads._
 import play.api.db._
 import play.api.Play.current
 
+import Problem._
+
 
 
 /**
