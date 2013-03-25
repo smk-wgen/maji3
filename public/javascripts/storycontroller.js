@@ -10,6 +10,7 @@ function Ctrl($scope,$http) {
     $scope.description = "Description";
     $scope.facilities = [{"id":1,"name":"Facility_1"},{"id":2,"name":"Facility_2"}];
     console.log("Down");
+
     $scope.getFacilities = function(){
         console.log("Making a call");
         //$http.get('/facility').success(onSuccess).error(onError);
