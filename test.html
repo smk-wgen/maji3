@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="angular-ui.min.css">
+ <link rel="stylesheet" href="jquery.ui.all.css">
+	
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	<script src="jquery.ui.core.js"></script>
+	<script src="jquery.ui.widget.js"></script>
+	<script src="jquery.ui.datepicker.js"></script>
+ <script src="angular.min.js"></script>
+ <script src="angular-ui.min.js"></script>
+</head>
+<body>
+
+<h1>My First Heading</h1>
+
+<p id="boldStuff">My first paragraph.</p>
+<p id="addStuff"></p>
+
+
+<script>  
+    //(function(){
+      var closure1=Closure(0, 0);
+
+      function Closure(num, i) {
+        var num=num;
+        var index=i;
+        var anArray = [];
+        return function(num,index) {
+          anArray[index]=(num);
+          out.innerHTML=anArray;
+        }
+      }
+  //}()); 
+ </script>
+
+<div ng-app>
+   <p>Nothing here {{'yet' + '!'}}</p>
+    <input ng-model="date" ui-date>
+	Selected Date: {{ date }}
+		Formatted Date: {{ date | date: 'mediumDate'}}
+		Selected Month: {{ date.getMonth() }}
+	<div ng-model="date" ui-date></div>
+</div> 
+<input id="dateField"></input>
+<button id="calculateBtn" class="btn btn-primary" value="But" onclick="calculate();">
+  
+</button>
+</body>
+<script type="text/javascript">
+function calculate(){
+  console.log("here");
+}
+function changeText(){
+	document.getElementById('boldStuff').innerHTML = 'Fred Flinstone';
+}
+(function(){
+   //this is a self contained module which doesnt affect other parts
+   document.getElementById('boldStuff').innerHTML = 'Barney Rubble';
+}());
+(function(){
+   document.getElementById('addStuff').innerHTML = 4 + 5;
+}());
+
+//changeText();
+</script>
+<script>
+	$(function() {
+		$( "#dateField" ).datepicker();
+                
+	});
+	</script>
+</html>
