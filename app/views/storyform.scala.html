@@ -29,12 +29,17 @@
      <input type="radio" name="rating" value="Good" ng-model="rating" required> Good<br>
      <input type="radio" name="rating" value="Ok" ng-model="rating"> Ok<br>
      <input type="radio" name="rating" value="Bad" ng-model="rating"> Bad<br>
-     <input ng-model="date" ui-date>
-     <div ng-model="date" ui-date></div>
+     When did this happen? <input id="dateField" type="text" ng-model="datexx">
      <input type="submit" id="submit" value="Submit" />
     <span class="error" ng-show="myForm.input.$error.required">Required!</span><br>
 
   </form>
+    <script>
+            $(function() {
+            $( "#dateField" ).datepicker();
+
+            });
+    </script>
 
 }
 

@@ -1,5 +1,9 @@
 package models
 
+import java.util.Date
+import java.util.Locale
+import java.text.SimpleDateFormat
+import java.text.DateFormat
 import anorm._
 import anorm.SqlParser._
 import play.api.libs.functional.syntax._
@@ -22,7 +26,7 @@ import Problem._
  * To change this template use File | Settings | File Templates.
  */
 case class Story(id:Pk[Int],title:String,description:String,facilityId:Int,problemType:String,you:String,
-                  treatment:String,rating:String)
+                  treatment:String,rating:String,date:Date)
 
 object Story{
   implicit val storyWriter = (
@@ -33,7 +37,8 @@ object Story{
     (__ \ "problem").write[String] and
       (__ \ "you").write[String] and
       (__ \ "treatment").write[String] and
-      (__ \ "rating").write[String]
+      (__ \ "rating").write[String] and
+      (__ \ "date").write(DateWriter)
     )(unlift(Story.unapply))
 
 
@@ -46,7 +51,8 @@ object Story{
       (__ \ "problem").read[String] and
       (__ \ "you").read[String] and
       (__ \ "treatment").read[String] and
-      (__ \ "rating").read[String]
+      (__ \ "rating").read[String] and
+      (__ \ "date").read(DateReader)
         //read(x=>augmentString(x).toInt)
     )(Story.apply _)
 
@@ -73,6 +79,27 @@ object Story{
         }
   }
 
+  implicit object DateReader extends Reads[Date] {
+    def reads(js:JsValue):JsResult[Date] = js match{
+      case JsString(x) =>  convert2Date(x) match{
+        case Some(d) =>JsSuccess(d)
+        case None => JsError("Not a valid Date Format")
+      }
+      case _ => JsError("Not a string ")
+    }
+  }
+  implicit object DateWriter extends Writes[Date] {
+    def writes(date:Date):JsValue = {
+      //DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+      new JsString(new SimpleDateFormat("MM/dd/yyyy").format(date))
+    }
+  }
+  def convert2Date(s :String): Option[Date] = try {
+    Some(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(s))
+  } catch {
+    case _ : java.lang.Exception => None
+  }
+
   def convert2Int(s : String) : Option[Int] = try {
     Some(s.toInt)
   } catch {
@@ -93,7 +120,7 @@ object Story{
       get[Int]("story.facility_id") ~
       get[String]("story.rating") map {
       case id~title~description~problem~you~treatment~facilityId~rating =>
-        Story(id, title, description, facilityId,problem, you, treatment,rating)
+        Story(id, title, description, facilityId,problem, you, treatment,rating,new Date())
     }
   }
   def findAll():Seq[Story] = {

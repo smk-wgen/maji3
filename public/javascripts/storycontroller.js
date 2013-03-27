@@ -30,9 +30,13 @@ function Ctrl($scope,$http) {
 
     $scope.selectedFacilityId=1;
     $scope.submit = function(){
+        var dateField = $("#dateField" ).val();
+        console.log("date is " + dateField);
         var postData =  {'title':$scope.title,'description':$scope.description,'facilityId':$scope.selectedFacilityId,
             'id':'','you':$scope.you,'rating':$scope.rating,'problem':$scope.problemType,
-        'treatment':$scope.treatment};
+        'treatment':$scope.treatment,'date':dateField};
+
+        console.log("Posting data");
         $http.post('/storypost',postData,{ 'Content-Type':'application/json'}).success(onSuccess).error(onError);
 //        jsRouter.controllers.Application.newStory().ajax({
 //            type:'POST',
